@@ -1,0 +1,12 @@
+{
+    "user_query": "Who is the ancestor of jim if john is the parent of mary and mary is the parent of jim?",
+    "prolog_code": "parent(john, mary).\nparent(mary, jim).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n\n?- ancestor(X, jim).",
+    "result": [
+        {
+            "X": "mary"
+        },
+        {
+            "X": "john"
+        }
+    ]
+}
