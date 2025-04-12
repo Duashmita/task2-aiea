@@ -5,10 +5,8 @@ from dotenv import load_dotenv
 from pyswip import Prolog
 
 
-#loads environment vairables from .env file (you may have to creaet one for yourself)
 load_dotenv()
 
-#Intializing OPENAI API
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def natural_language_to_prolog(client, query):
@@ -20,7 +18,9 @@ def natural_language_to_prolog(client, query):
         messages=[
             {"role": "system", "content": "You are a natural language to Prolog converter. Only return valid Prolog code with no explanations, no comments, and no markdown formatting. Do not include ``` or any descriptive text. Always include a query line starting with '?-' at the end."},
             {"role": "user", "content": query}
-        ]
+        ],
+        temperature = 0,
+        max_tokens = 500,
     )
 
     return response.choices[0].message.content
@@ -36,7 +36,7 @@ def run_prolog(instructions):
 
     for line in lines:
         line = line.strip()
-        if not line or line.startswith("%"):  # Skip empty lines or comments
+        if not line or line.startswith("%"):
             continue
         if line.startswith("?-"):
             query = line[2:].strip().rstrip(".")
